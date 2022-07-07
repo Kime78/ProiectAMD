@@ -7,6 +7,14 @@ enum class AccountType {
     InvalidUser = 0, User, Admin
 };
 
+struct ShoppingCart {
+private:
+    std::vector<uint64_t> cart;
+public:
+    void add_product(uint64_t id);
+    void remove_product(uint64_t id);
+    const std::vector<uint64_t> get_products();
+};
 struct Account {
     std::vector<uint64_t> shopping_cart; //to be redesigned later
     std::string username;
@@ -16,15 +24,15 @@ struct Account {
 };
 
 class AccountDatabase {
-    std::vector<Account> database;
+    std::vector<Account> account_database;
 public:
     Account get_user_by_id(uint64_t id);
 
-    std::vector<Account> get_users_by_name(std::string user);
+    const std::vector<Account> get_users_by_name(std::string user);
 
-    std::vector<Account> get_users();
+    const std::vector<Account> get_users();
 
     Account auth(std::string user, std::string pass);
 
-    void add_user(std::string user, std::string pass, AccountType type);
+    void add_user(std::string user, std::string pass, AccountType type); //
 };
