@@ -19,6 +19,7 @@ struct Account {
     std::vector<uint64_t> shopping_cart; //to be redesigned later
     std::string username;
     std::string password;
+    uint64_t id;
     AccountType type;
     Account(std::string username, std::string password, AccountType type);
 };
@@ -34,5 +35,9 @@ public:
 
     Account auth(std::string user, std::string pass);
 
-    void add_user(std::string user, std::string pass, AccountType type); //
+    void add_user(std::string user, std::string pass, AccountType type);
+
+    void remove_user(uint64_t id);
+
+    void load_users_from_file();
 };

@@ -149,7 +149,9 @@ public:
     Product get_product_by_id(uint64_t id);
     void add_product(Product prod);
     void remove_product(uint64_t id);
+    void load_products_from_file();
     const std::vector<Product> get_products();
     const std::vector<Product> get_products_with_type(ProductType type);
+    
     //to be filled with all filters...
 };
