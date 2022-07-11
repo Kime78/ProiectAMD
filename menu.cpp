@@ -114,7 +114,27 @@ void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 }
 
 void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-
+    int optiune;
+    //std::cout << "[admin]" << user << ":\n\n"; //vezi mai tarz
+    std::cout << "1) Login\n2) Signup\n3) Exit\nChoose Option: ";
+    std::cin >> optiune;
+    switch (optiune)
+    {
+        Menu* menu;
+    case 1:
+        menu = new LoginMenu;
+        menu->draw(accounts, products);   
+        break;
+    case 2:
+        menu = new SignupMenu;
+        menu->draw(accounts, products);
+    case 6:
+        return;
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -123,4 +143,12 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 
 void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 
+}
+
+void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+
+}
+
+void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    
 }

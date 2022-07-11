@@ -53,7 +53,7 @@ public:
     }
 };
 
-class CPU : protected Chip {
+class CPU : public Chip {
 protected:
     uint16_t cores;
     uint16_t threads;
@@ -87,7 +87,7 @@ public:
 enum class SupportedTechnologies {
         OpenGL, Vulkan, DirectX, OpenGL_Vulkan, OpenGL_DirectX, Vulkan_DirectX, OpenGL_Vulkan_DirectX
 };
-class GPU : protected Chip {
+class GPU : public Chip {
 protected:
     uint32_t max_vertical_res;
     uint32_t max_horizontal_res;
@@ -119,9 +119,9 @@ public:
     }
 };
 
-class APU : protected CPU, protected GPU {
+class APU : public CPU, public GPU {
 public:
-APU() = default;
+APU();
 };
 
 enum class ProductType {
