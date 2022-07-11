@@ -39,5 +39,7 @@ public:
 
     void remove_user(uint64_t id);
 
+    void make_admin(uint64_t id);
+
     void load_users_from_file();
 };

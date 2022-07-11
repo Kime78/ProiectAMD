@@ -106,11 +106,21 @@ void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) 
 }
 
 void RemoveProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-
+    uint64_t id;
+    std::cout << "ID of user to be deleted: ";
+    std::cin >> id;
+    products.remove_product(id);
+    Menu* menu = new AdminMenu;
+    menu->draw(accounts, products);
 }
 
 void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-
+    uint64_t id;
+    std::cout << "ID of user to be promoted to ADMIN: ";
+    std::cin >> id;
+    accounts.make_admin(id);
+    Menu* menu = new AdminMenu;
+    menu->draw(accounts, products);
 }
 
 void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -138,17 +148,59 @@ void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 }
 
 void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-
+    
 }
 
 void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-
+    size_t index = 0;
+    if(products.get_products().size() < 10) {
+        
+    }
 }
 
 void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    std::string user, pass;
+    std::cout << "user: ";
+    std::cin >> user;
+    std::cout << "pass: ";
+    std::cin >> pass;
 
+    Account a = Account(user, pass, AccountType::User);
+
+    std::cout << "Your account has been succcesfully created, you may login now.";
+
+    Menu* menu = new UserMenu;
+    menu->draw(accounts, products);
 }
 
 void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
-    
+    std::string user, pass;
+    std::cout << "user: ";
+    std::cin >> user;
+    std::cout << "pass: ";
+    std::cin >> pass;
+
+    Account a = accounts.auth(user, pass);
+    Menu* menu;
+    switch (a.type) {
+    case AccountType::InvalidUser:
+        std::cout << "Invalid username or password! Please try again.\n\n";
+        menu = new LoginMenu;
+        menu->draw(accounts, products);
+        break;
+    case AccountType::User:
+        std::cout << "Welcome " << a.username << "!";
+        menu = new UserMenu;
+        menu->draw(accounts, products);
+        break;
+
+    case AccountType::Admin:
+        std::cout << "Welcome " << a.username << "!";
+        menu = new AdminMenu;
+        menu->draw(accounts, products);
+        break;
+
+    default:
+        break;
+    }
 }

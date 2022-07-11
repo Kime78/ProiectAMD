@@ -121,21 +121,23 @@ public:
 
 class APU : public CPU, public GPU {
 public:
-APU();
+APU() = default;
 };
 
 enum class ProductType {
     GPU, CPU, APU
 };
 struct Product {
+    std::string name;
     uint32_t price;
     uint64_t id;
     ProductType type;
-    APU prod_apu = APU();
-    CPU prod_cpu = CPU();
-    GPU prod_gpu = GPU();
+    APU apu = APU();
+    CPU cpu = CPU();
+    GPU gpu = GPU();
 
-    Product(uint32_t price) {
+    Product(std::string name, uint32_t price) {
+        this->name = name;
         this->price = price;
         this->id = random();
     }

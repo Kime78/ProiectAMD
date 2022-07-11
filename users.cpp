@@ -67,7 +67,20 @@ void AccountDatabase::remove_user(uint64_t id) {
         line.replace(line.find(delete_line), delete_line.length(), "");
     }
     
-    //account_database.erase(std::remove(account_database.begin(), account_database.end(), acc), account_database.end());
+    for(auto i = account_database.begin(); i != account_database.end(); i++) {
+        if((*i).id == id) {
+            account_database.erase(i);
+            break;
+        }
+    }
+}
+
+void AccountDatabase::make_admin(uint64_t id) {
+    for(size_t i = 0; i < account_database.size(); i++) {
+        if(account_database[i].id == id) {
+            account_database[i].type = AccountType::Admin;
+        }
+    }
 }
 
 void AccountDatabase::load_users_from_file() {
