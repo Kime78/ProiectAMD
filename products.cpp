@@ -108,10 +108,10 @@ void ProductDatabase::load_products_from_file() { //to be worked on :(
     uint64_t id;
     uint32_t price;
 
-    double weight;
-    double height;
-    uint8_t nms;
-    double tdp;
+    uint16_t weight;
+    uint16_t height;
+    uint16_t nms;
+    uint16_t tdp;
     uint32_t memory;
     uint32_t clock;
 
@@ -140,7 +140,10 @@ void ProductDatabase::load_products_from_file() { //to be worked on :(
             prod->cpu->set_tdp(tdp);
             prod->cpu->set_memory(memory);
             prod->cpu->set_clock(clock);
+
             prod->type = ProductType::CPU;
+            prod->id = id;
+            prod->name = name;
 
             product_database.push_back(*prod);
 
@@ -151,7 +154,7 @@ void ProductDatabase::load_products_from_file() { //to be worked on :(
             product_file >> max_vertical_res;
             product_file >> tech;
 
-            Product* prod= new Product(name, price);
+            Product* prod = new Product(name, price);
             SupportedTechnologies s_tech;
             if(tech == "OpenGL") {
                 s_tech = SupportedTechnologies::OpenGL;
@@ -181,7 +184,11 @@ void ProductDatabase::load_products_from_file() { //to be worked on :(
             prod->gpu->set_tdp(tdp);
             prod->gpu->set_memory(memory);
             prod->gpu->set_clock(clock);
+
             prod->type = ProductType::GPU;
+            prod->id = id;
+            prod->name = name;
+
             product_database.push_back(*prod);
 
             delete prod;
@@ -235,28 +242,30 @@ void ProductDatabase::load_products_from_file() { //to be worked on :(
             prod->apu->set_supported_tech(s_tech);
 
             prod->type = ProductType::APU;
+            prod->id = id;
+            prod->name = name;
 
             product_database.push_back(*prod);
 
             delete prod;
         }
     }
-
 }
 
 void ProductDatabase::remove_product(uint64_t id) {
     std::ifstream in("./.secrets/products.txt");
-    std::ofstream out("./.secrets/products.txt");
+    std::ofstream out("./.secrets/temp.txt");
     std::string line;
     std::string delete_line;
     Product prod = get_product_by_id(id);
+    delete_line = std::to_string(prod.id) + "\t" + prod.name + "\t" + std::to_string(prod.price) + "\t";  
     if(prod.type == ProductType::CPU) {
-        delete_line = std::to_string(prod.cpu->get_weight()) + "\t" + std::to_string(prod.cpu->get_height()) + "\t" + std::to_string(prod.cpu->get_nms()) + "\t" + std::to_string(prod.cpu->get_tdp()) + "\t" + std::to_string(prod.cpu->get_memory()) + "\t" + std::to_string(prod.cpu->get_clock()) + "\tCPU\t";
+        delete_line += std::to_string(prod.cpu->get_weight()) + "\t" + std::to_string(prod.cpu->get_height()) + "\t" + std::to_string(prod.cpu->get_nms()) + "\t" + std::to_string(prod.cpu->get_tdp()) + "\t" + std::to_string(prod.cpu->get_memory()) + "\t" + std::to_string(prod.cpu->get_clock()) + "\tCPU\t";
         delete_line += std::to_string(prod.cpu->get_cores()) + "\t" + std::to_string(prod.cpu->get_threads()) + "\t" + prod.cpu->get_socket();
         delete prod.cpu;
     }
     else if(prod.type == ProductType::GPU) {
-        delete_line = std::to_string(prod.gpu->get_weight()) + "\t" + std::to_string(prod.gpu->get_height()) + "\t" + std::to_string(prod.gpu->get_nms()) + "\t" + std::to_string(prod.gpu->get_tdp()) + "\t" + std::to_string(prod.gpu->get_memory()) + "\t" + std::to_string(prod.gpu->get_clock()) + "\tGPU\t";
+        delete_line += std::to_string(prod.gpu->get_weight()) + "\t" + std::to_string(prod.gpu->get_height()) + "\t" + std::to_string(prod.gpu->get_nms()) + "\t" + std::to_string(prod.gpu->get_tdp()) + "\t" + std::to_string(prod.gpu->get_memory()) + "\t" + std::to_string(prod.gpu->get_clock()) + "\tGPU\t";
         delete_line += std::to_string(prod.gpu->get_max_horizontal_res()) + "\t" + std::to_string(prod.gpu->get_max_vertical_res()) + "\t";
         switch (prod.gpu->get_supported_tech()) {
         case SupportedTechnologies::OpenGL:
@@ -287,7 +296,7 @@ void ProductDatabase::remove_product(uint64_t id) {
         delete prod.gpu;
     }
     else if(prod.type == ProductType::APU) {
-        delete_line = std::to_string(prod.apu->CPU::get_weight()) + "\t" + std::to_string(prod.apu->CPU::get_height()) + "\t" + std::to_string(prod.apu->CPU::get_nms()) + "\t" + std::to_string(prod.apu->CPU::get_tdp()) + "\t" + std::to_string(prod.apu->CPU::get_memory()) + "\t" + std::to_string(prod.apu->CPU::get_clock()) + "\tAPU\t";
+        delete_line += std::to_string(prod.apu->CPU::get_weight()) + "\t" + std::to_string(prod.apu->CPU::get_height()) + "\t" + std::to_string(prod.apu->CPU::get_nms()) + "\t" + std::to_string(prod.apu->CPU::get_tdp()) + "\t" + std::to_string(prod.apu->CPU::get_memory()) + "\t" + std::to_string(prod.apu->CPU::get_clock()) + "\tAPU\t";
         delete_line += std::to_string(prod.apu->get_cores()) + "\t" + std::to_string(prod.apu->get_threads()) + "\t" + prod.apu->get_socket() + "\t";
         delete_line += std::to_string(prod.apu->get_max_horizontal_res()) + "\t" + std::to_string(prod.apu->get_max_vertical_res()) + "\t";
         switch (prod.apu->get_supported_tech())
@@ -321,9 +330,13 @@ void ProductDatabase::remove_product(uint64_t id) {
     }
     const Product p = prod;
     while (getline(in, line)) {
-        line.replace(line.find(delete_line), delete_line.length(), "");
-        out << line << std::endl;
+        if(line != delete_line)
+            out << line << std::endl;
     }
+
+    std::remove("./.secrets/products.txt");
+    std::rename("./.secrets/temp.txt", "./.secrets/products.txt");
+
     for(auto i = product_database.begin(); i != product_database.end(); i++) {
         if((*i).id == id) {
             product_database.erase(i);
@@ -354,7 +367,7 @@ const std::vector<Product> ProductDatabase::get_products_with_price(uint32_t pri
     return ret;
 }
 
-const std::vector<Product> ProductDatabase::get_products_with_weight(double weight) {
+const std::vector<Product> ProductDatabase::get_products_with_weight(uint16_t weight) {
     std::vector<Product> ret;
     for(size_t i = 0; i < product_database.size(); i++) {
         switch (product_database[i].type)
@@ -378,7 +391,7 @@ const std::vector<Product> ProductDatabase::get_products_with_weight(double weig
     return ret;
 }
 
-const std::vector<Product> ProductDatabase::get_products_with_height(double height) {
+const std::vector<Product> ProductDatabase::get_products_with_height(uint16_t height) {
     std::vector<Product> ret;
     for(size_t i = 0; i < product_database.size(); i++) {
         switch (product_database[i].type)
@@ -402,7 +415,7 @@ const std::vector<Product> ProductDatabase::get_products_with_height(double heig
     return ret;
 }
 
-const std::vector<Product> ProductDatabase::get_products_with_nms(uint8_t nms) {
+const std::vector<Product> ProductDatabase::get_products_with_nms(uint16_t nms) {
     std::vector<Product> ret;
     for(size_t i = 0; i < product_database.size(); i++) {
         switch (product_database[i].type)
@@ -426,7 +439,7 @@ const std::vector<Product> ProductDatabase::get_products_with_nms(uint8_t nms) {
     return ret;
 }
 
-const std::vector<Product> ProductDatabase::get_products_with_tdp(double tdp) {
+const std::vector<Product> ProductDatabase::get_products_with_tdp(uint16_t tdp) {
     std::vector<Product> ret;
     for(size_t i = 0; i < product_database.size(); i++) {
         switch (product_database[i].type)

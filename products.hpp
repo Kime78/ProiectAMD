@@ -5,25 +5,25 @@
 
 class Chip {
 protected:
-    double weight;
-    double height;
-    uint8_t nms;
-    double tdp;
+    uint16_t weight;
+    uint16_t height;
+    uint16_t nms;
+    uint16_t tdp;
     uint32_t memory;
     uint32_t clock;
 
 public:
     Chip() = default;
-    inline void set_weight(double weight) {
+    inline void set_weight(uint16_t weight) {
         this->weight = weight;
     }
-    inline void set_height(double height) {
+    inline void set_height(uint16_t height) {
         this->height = height;
     }
-    inline void set_nms(uint8_t nms) {
+    inline void set_nms(uint16_t nms) {
         this->nms = nms;
     }
-    inline void set_tdp(double tdp) {
+    inline void set_tdp(uint16_t tdp) {
         this->tdp = tdp;
     }
     inline void set_memory(uint32_t memory) {
@@ -33,16 +33,16 @@ public:
         this->clock = clock;
     }
 
-    inline double get_weight() {
+    inline uint16_t get_weight() {
         return this->weight;
     }
-    inline double get_height() {
+    inline uint16_t get_height() {
         return this->height;
     }
-    inline uint8_t get_nms() {
+    inline uint16_t get_nms() {
         return this->nms;
     }
-    inline double get_tdp() {
+    inline uint16_t get_tdp() {
         return this->tdp;
     }
     inline uint32_t get_memory() {
@@ -108,7 +108,7 @@ public:
         this->supported_tech = supported_tech; 
     }
 
-    inline double get_max_vertical_res() {
+    inline uint16_t get_max_vertical_res() {
         return this->max_vertical_res;
     }
     inline uint32_t get_max_horizontal_res() {
@@ -157,10 +157,10 @@ public:
     const std::vector<Product> get_products_with_str(std::string str);
     const std::vector<Product> get_products_with_price(uint32_t price);
 
-    const std::vector<Product> get_products_with_weight(double weight);
-    const std::vector<Product> get_products_with_height(double height);
-    const std::vector<Product> get_products_with_nms(uint8_t nms);
-    const std::vector<Product> get_products_with_tdp(double tdp);
+    const std::vector<Product> get_products_with_weight(uint16_t weight);
+    const std::vector<Product> get_products_with_height(uint16_t height);
+    const std::vector<Product> get_products_with_nms(uint16_t nms);
+    const std::vector<Product> get_products_with_tdp(uint16_t tdp);
     const std::vector<Product> get_products_with_memory(uint32_t memory);
     const std::vector<Product> get_products_with_clock(uint32_t clock);
 

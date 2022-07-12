@@ -56,7 +56,7 @@ void AccountDatabase::add_user(std::string user, std::string pass, AccountType t
 void AccountDatabase::remove_user(uint64_t id) {
     //todo: remove from file
     std::ifstream in("./.secrets/accounts.txt");
-    std::ofstream out("./.secrets/accounts.txt");
+    std::ofstream out("./.secrets/temp.txt");
     std::string line;
     std::string delete_line;
     Account acc = get_user_by_id(id);
@@ -65,10 +65,11 @@ void AccountDatabase::remove_user(uint64_t id) {
     else
         delete_line = std::to_string(acc.id) + "\t" + acc.username + "\t" + acc.password + "\t" + "User";
     while (getline(in, line)) {
-        line.replace(line.find(delete_line), delete_line.length(), "");
-        //out << line << std::endl;
+        if(line != delete_line)
+            out << line << std::endl;
     }
-    
+    std::remove("./.secrets/accounts.txt");
+    std::rename("./.secrets/temp.txt", "./.secrets/accounts.txt");
     for(auto i = account_database.begin(); i != account_database.end(); i++) {
         if((*i).id == id) {
             account_database.erase(i);

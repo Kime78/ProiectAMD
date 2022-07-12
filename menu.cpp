@@ -119,10 +119,10 @@ void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) 
     uint64_t id;
     uint32_t price;
 
-    double weight;
-    double height;
-    uint8_t nms;
-    double tdp;
+    uint16_t weight;
+    uint16_t height;
+    uint16_t nms;
+    uint16_t tdp;
     uint32_t memory;
     uint32_t clock;
 
@@ -457,25 +457,25 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         prod = products.get_products_with_price(price);
     }
     if(filter == "weight") {
-        double weight;
+        uint16_t weight;
         std::cout << "\nWeight to be filtered: ";
         std::cin >> weight;
         prod = products.get_products_with_weight(weight);
     }
     if(filter == "height") {
-        double height;
+        uint16_t height;
         std::cout << "\nHeight to be filtered: ";
         std::cin >> height;
         prod = products.get_products_with_height(height);
     }
     if(filter == "nms") {
-        uint8_t nms;
+        uint16_t nms;
         std::cout << "\nnms to be filtered: ";
         std::cin >> nms;
         prod = products.get_products_with_nms(nms);
     }
     if(filter == "tdp") {
-        double tdp;
+        uint16_t tdp;
         std::cout << "\ntdp to be filtered: ";
         std::cin >> tdp;
         prod = products.get_products_with_tdp(tdp);
