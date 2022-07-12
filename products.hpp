@@ -147,7 +147,7 @@ struct ProductDatabase {
 private:
     std::vector<Product> product_database;
 public:
-
+    uint64_t selected_product_id = 0;
     Product get_product_by_id(uint64_t id);
     void add_product(Product prod);
     void remove_product(uint64_t id);

@@ -1,7 +1,7 @@
 #include "menu.hpp"
 #include <iostream>
 
-void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     int optiune;
     //std::cout << "[admin]" << user << ":\n\n"; //vezi mai tarz
     std::cout << "1) Add Item\n2) Remove Item\n3) Add User\n4) Ban User\n5) Make Admin\n6) Logout\n\nChoose Option: ";
@@ -12,37 +12,37 @@ void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint6
     case 1:
         menu = new AddProductMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 2:
         menu = new RemoveProductMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 3:
         menu = new AddUserMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 4:
         menu = new RemoveUserMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 5:
         menu = new MakeAdminMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 6:
         menu = new MainMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     
@@ -51,7 +51,7 @@ void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint6
     }
 }
 
-void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     int optiune;
     std::cout << "1) View Cart\n2) Browse the shop\n3) Logout\nChoose Option: ";
     std::cin >> optiune;
@@ -61,19 +61,19 @@ void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
     case 1:
         menu = new CartMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 2:
         menu = new ShopMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     case 3:
         menu = new MainMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         
         break;
     
@@ -82,7 +82,7 @@ void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
     }
 }
 
-void AddUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void AddUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     std::string user, pass;
     bool admin;
     std::cout << "user: ";
@@ -98,21 +98,21 @@ void AddUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uin
         accounts.add_user(user, pass, AccountType::User);
     Menu* menu = new AdminMenu;
     system("clear");
-    menu->draw(accounts, products, logged_id);
+    menu->draw(accounts, products);
     
 }
 
-void RemoveUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void RemoveUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     uint64_t id;
     std::cout << "ID of user to be deleted: ";
     std::cin >> id;
     accounts.remove_user(id);
     Menu* menu = new AdminMenu;
     system("clear");
-    menu->draw(accounts, products, logged_id);
+    menu->draw(accounts, products);
 }
 
-void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     std::string name;
     uint64_t id;
     uint32_t price;
@@ -282,30 +282,30 @@ void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products, 
     }
     Menu* menu = new AdminMenu;
     system("clear");
-    menu->draw(accounts, products, logged_id);
+    menu->draw(accounts, products);
 }
 
-void RemoveProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void RemoveProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     uint64_t id;
     std::cout << "ID of product to be deleted: ";
     std::cin >> id;
     products.remove_product(id);
     Menu* menu = new AdminMenu;
     system("clear");
-    menu->draw(accounts, products, logged_id);
+    menu->draw(accounts, products);
 }
 
-void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     uint64_t id;
     std::cout << "ID of user to be promoted to ADMIN: ";
     std::cin >> id;
     accounts.make_admin(id);
     Menu* menu = new AdminMenu;
     system("clear");
-    menu->draw(accounts, products, logged_id);
+    menu->draw(accounts, products);
 }
 
-void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     int optiune;
     //std::cout << "[admin]" << user << ":\n\n"; //vezi mai tarz
     std::cout << "1) Login\n2) Signup\n3) Exit\nChoose Option: ";
@@ -316,12 +316,12 @@ void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
     case 1:
         menu = new LoginMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);   
+        menu->draw(accounts, products);   
         break;
     case 2:
         menu = new SignupMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
     case 3:
         return;
         break;
@@ -331,8 +331,8 @@ void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
     }
 }
 
-void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
-    Account acc = accounts.get_user_by_id(logged_id);
+void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    Account acc = accounts.get_user_by_id(accounts.logged_user_id);
     if(acc.type == AccountType::InvalidUser) {
         std::cout << "ERROR: INVALID USER";
         exit(EXIT_FAILURE);
@@ -345,7 +345,7 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
         std::cin.get();
         menu = new UserMenu;
         system("clear");
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
     }
     else {
         size_t index = 0;
@@ -360,19 +360,19 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
             Menu* menu;
             if(option == 'E') {
                 menu = new UserMenu;
-                menu->draw(accounts, products, logged_id);
+                menu->draw(accounts, products);
             } 
             else if(option == '0') {
                 for(size_t i = 0; i < cart.size(); i++) {
                     acc.cart.remove_product(cart[i]);
                 }
                 menu = new UserMenu;
-                menu->draw(accounts, products, logged_id);
+                menu->draw(accounts, products);
             }
 
             acc.cart.remove_product(cart[option - 1]);
             menu = new UserMenu;
-            menu->draw(accounts, products, logged_id);
+            menu->draw(accounts, products);
         }
         else {
             size_t num_pages = cart.size() / 10;
@@ -399,29 +399,30 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
             //solve this
             if(option == 'E') {
                 menu = new UserMenu;
-                menu->draw(accounts, products, logged_id);
+                menu->draw(accounts, products);
             } 
             else if(option == 'B') {
                 menu = new ShopMenu;
-                menu->draw(accounts, products, logged_id);
+                menu->draw(accounts, products);
             }
             else if(option == '0') {
                 for(size_t i = 0; i < cart.size(); i++) {
                     acc.cart.remove_product(cart[i]);
                 }
                 menu = new UserMenu;
-                menu->draw(accounts, products, logged_id);
+                menu->draw(accounts, products);
             }
 
             acc.cart.remove_product(cart[option - 1]);
             menu = new UserMenu;
-            menu->draw(accounts, products, logged_id);
+            menu->draw(accounts, products);
         }
     }
 }
 
-void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     size_t index = 0;
+    Menu* menu;
     //select filter
     std::vector<Product> prod = products.get_products();
     if(prod.size() < 10) {
@@ -435,10 +436,13 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
         Menu* menu;
         if(option == 'E') {
             menu = new UserMenu;
-            menu->draw(accounts, products, logged_id);
+            menu->draw(accounts, products);
         } 
         else {
             //view product menu - 1
+            products.selected_product_id = prod[option - 1].id;
+            menu = new ViewProductMenu;
+            menu->draw(accounts, products);
         }
     }
     else {
@@ -461,28 +465,133 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64
         std::cout << "\nType a number to select the desired product or type B to select another page or E to exit the shop: ";
         std::cin >> option;
 
-        Menu* menu;
-
         //solve this
         if(option == 'E') {
             menu = new UserMenu;
-            menu->draw(accounts, products, logged_id);
+            menu->draw(accounts, products);
         } 
         else if(option == 'B') {
             menu = new ShopMenu;
-            menu->draw(accounts, products, logged_id);
+            menu->draw(accounts, products);
         }
         else {
             //view products - 1
-            Account& acc = accounts.get_user_by_id(logged_id);
-            acc.cart.add_product(prod[option - 1].id); 
-            menu = new UserMenu;
-            menu->draw(accounts, products, logged_id);
+            products.selected_product_id = prod[option - 1].id;
+            Account& acc = accounts.get_user_by_id(accounts.logged_user_id);
+            menu = new ViewProductMenu;
+            menu->draw(accounts, products);
         }
     }
 }
 
-void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void ViewProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    Product prod = products.get_product_by_id(products.selected_product_id);
+    
+    std::cout << "Name of the product: " << prod.name << '\n';
+    std::cout << "Price of the product: " << prod.price << '\n';
+
+    if(prod.type == ProductType::CPU) {
+        std::cout << "Type of the product: CPU\n";
+
+        std::cout << "weight: " << prod.cpu->get_weight() << '\n';
+        std::cout << "height: " <<  prod.cpu->get_height() << '\n';
+        std::cout << "nms: " << prod.cpu->get_nms() << '\n';
+        std::cout << "tdp: " << prod.cpu->get_tdp() << '\n';
+        std::cout << "memory: " << prod.cpu->get_memory() << '\n';
+        std::cout << "clock: " << prod.cpu->get_clock() << '\n';
+
+        std::cout << "cores: " << prod.cpu->get_cores() << '\n';
+        std::cout << "threads: " << prod.cpu->get_threads() << '\n';
+        std::cout << "socket: " << prod.cpu->get_socket() << '\n';
+
+    }
+    if(prod.type == ProductType::GPU) {
+        std::cout << "Type of the product: GPU\n";
+
+        std::cout << "weight: " << prod.gpu->get_weight() << '\n';
+        std::cout << "height: " <<  prod.gpu->get_height() << '\n';
+        std::cout << "nms: " << prod.gpu->get_nms() << '\n';
+        std::cout << "tdp: " << prod.gpu->get_tdp() << '\n';
+        std::cout << "memory: " << prod.gpu->get_memory() << '\n';
+        std::cout << "clock: " << prod.gpu->get_clock() << '\n';
+
+        std::cout << "max horizontal resolution: " << prod.gpu->get_max_horizontal_res() << '\n';
+        std::cout << "max vertical resolution: " << prod.gpu->get_max_vertical_res() << '\n';
+        std::cout << "Supported Technologies: ";
+
+        switch(prod.gpu->get_supported_tech()) {
+            case SupportedTechnologies::OpenGL:
+                std::cout << "OpenGL";
+                break;
+            case SupportedTechnologies::Vulkan:
+                std::cout << "Vulkan";
+                break;
+            case SupportedTechnologies::DirectX:
+                std::cout << "DirectX";
+                break;
+            case SupportedTechnologies::OpenGL_Vulkan:
+                std::cout << "OpenGL & Vulkan";
+                break;
+            case SupportedTechnologies::OpenGL_DirectX:
+                std::cout << "OpenGL & DirectX";
+                break;
+            case SupportedTechnologies::OpenGL_Vulkan_DirectX:
+                std::cout << "OpenGL & Vulkan & DirectX";
+                break;          
+        }
+    }
+    if(prod.type == ProductType::APU) {
+        std::cout << "Type of the product: APU\n";
+
+        std::cout << "weight: " << prod.apu->CPU::get_weight() << '\n';
+        std::cout << "height: " <<  prod.apu->CPU::get_height() << '\n';
+        std::cout << "nms: " << prod.apu->CPU::get_nms() << '\n';
+        std::cout << "tdp: " << prod.apu->CPU::get_tdp() << '\n';
+        std::cout << "memory: " << prod.apu->CPU::get_memory() << '\n';
+        std::cout << "clock: " << prod.apu->CPU::get_clock() << '\n';
+
+        std::cout << "cores: " << prod.apu->get_cores() << '\n';
+        std::cout << "threads: " << prod.apu->get_threads() << '\n';
+        std::cout << "socket: " << prod.apu->get_socket() << '\n';
+
+        std::cout << "max horizontal resolution: " << prod.apu->get_max_horizontal_res() << '\n';
+        std::cout << "max vertical resolution: " << prod.apu->get_max_vertical_res() << '\n';
+        std::cout << "Supported Technologies: ";
+
+        switch(prod.apu->get_supported_tech()) {
+            case SupportedTechnologies::OpenGL:
+                std::cout << "OpenGL";
+                break;
+            case SupportedTechnologies::Vulkan:
+                std::cout << "Vulkan";
+                break;
+            case SupportedTechnologies::DirectX:
+                std::cout << "DirectX";
+                break;
+            case SupportedTechnologies::OpenGL_Vulkan:
+                std::cout << "OpenGL & Vulkan";
+                break;
+            case SupportedTechnologies::OpenGL_DirectX:
+                std::cout << "OpenGL & DirectX";
+                break;
+            case SupportedTechnologies::OpenGL_Vulkan_DirectX:
+                std::cout << "OpenGL & Vulkan & DirectX";
+                break;          
+        }
+    }
+    bool option;
+    std::cout << "\n\nType 1 if you want to put this product in the shopping cart or 0 to leave: ";
+    std::cin >> option;
+    if(option) {
+        Account acc = accounts.get_user_by_id(accounts.logged_user_id);
+        acc.cart.add_product(products.selected_product_id);
+    }
+    Menu* menu = new ShopMenu;
+    system("clear");
+    menu->draw(accounts, products);
+}
+
+void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     std::string user, pass;
     std::cout << "user: ";
     std::cin >> user;
@@ -494,11 +603,11 @@ void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint
 
     Menu* menu = new UserMenu;
     
-    logged_id = accounts.get_users_by_name(user)[0].id;
-    menu->draw(accounts, products, logged_id);
+    accounts.logged_user_id = accounts.get_users_by_name(user)[0].id;
+    menu->draw(accounts, products);
 }
 
-void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint64_t logged_id) {
+void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     std::string user, pass;
     std::cout << "user: ";
     std::cin >> user;
@@ -511,15 +620,15 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint6
     case AccountType::InvalidUser:
         std::cout << "Invalid username or password! Please try again.\n\n";
         menu = new LoginMenu;
-        menu->draw(accounts, products, logged_id);
+        menu->draw(accounts, products);
         break;
     case AccountType::User:
         system("clear");
         std::cout << "Welcome " << a.username << "!\n\n";
         menu = new UserMenu;
         system("clear");
-        logged_id = a.id;
-        menu->draw(accounts, products, logged_id);
+        accounts.logged_user_id = a.id;
+        menu->draw(accounts, products);
         break;
 
     case AccountType::Admin:
@@ -527,8 +636,8 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products, uint6
         std::cout << "Welcome " << a.username << "!\n\n";
         menu = new AdminMenu;
         system("clear");
-        logged_id = a.id;
-        menu->draw(accounts, products, logged_id);
+        accounts.logged_user_id = a.id;
+        menu->draw(accounts, products);
         break;
 
     default:

@@ -27,6 +27,8 @@ struct Account {
 class AccountDatabase {
     std::vector<Account> account_database;
 public:
+
+    uint64_t logged_user_id = 0;
     Account& get_user_by_id(uint64_t id);
 
     const std::vector<Account> get_users_by_name(std::string user);
