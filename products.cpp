@@ -342,6 +342,278 @@ const std::vector<Product> ProductDatabase::get_products_with_type(ProductType t
         if(product_database[i].type == type)
             ret.push_back(product_database[i]);
     }
+    return ret;
+}
 
-    return product_database;
+const std::vector<Product> ProductDatabase::get_products_with_price(uint32_t price) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        if(product_database[i].price == price)
+            ret.push_back(product_database[i]);
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_weight(double weight) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_weight() == weight)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_weight() == weight)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_weight() == weight)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_height(double height) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_height() == height)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_height() == height)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_height() == height)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_nms(uint8_t nms) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_nms() == nms)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_nms() == nms)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_nms() == nms)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_tdp(double tdp) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_tdp() == tdp)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_tdp() == tdp)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_tdp() == tdp)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_memory(uint32_t memory) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_memory() == memory)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_memory() == memory)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_memory() == memory)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_clock(uint32_t clock) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_clock() == clock)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_clock() == clock)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_clock() == clock)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_cores(uint16_t cores) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_cores() == cores)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_cores() == cores)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_threads(uint16_t threads) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_threads() == threads)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_threads() == threads)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_socket(std::string socket) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::CPU:
+            if(product_database[i].cpu->get_socket() == socket)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->CPU::get_socket() == socket)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_max_vert_res(uint32_t max_vertical_res) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_max_vertical_res() == max_vertical_res)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->get_max_vertical_res() == max_vertical_res)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_max_hor_res(uint32_t max_horizontal_res) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_max_horizontal_res() == max_horizontal_res)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->get_max_horizontal_res() == max_horizontal_res)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
+const std::vector<Product> ProductDatabase::get_products_with_tech(SupportedTechnologies tech) {
+    std::vector<Product> ret;
+    for(size_t i = 0; i < product_database.size(); i++) {
+        switch (product_database[i].type)
+        {
+        case ProductType::GPU:
+            if(product_database[i].gpu->get_supported_tech() == tech)
+                ret.push_back(product_database[i]);
+            break;
+        case ProductType::APU:
+            if(product_database[i].apu->get_supported_tech() == tech)
+                ret.push_back(product_database[i]);
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
 }

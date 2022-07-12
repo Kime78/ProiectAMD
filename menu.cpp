@@ -2,6 +2,7 @@
 #include <iostream>
 
 void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    std::cout << "Welcome " << accounts.get_user_by_id(accounts.logged_user_id).username << "!\n\n";
     int optiune;
     //std::cout << "[admin]" << user << ":\n\n"; //vezi mai tarz
     std::cout << "1) Add Item\n2) Remove Item\n3) Add User\n4) Ban User\n5) Make Admin\n6) Logout\n\nChoose Option: ";
@@ -52,6 +53,7 @@ void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 }
 
 void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
+    std::cout << "Welcome " << accounts.get_user_by_id(accounts.logged_user_id).username << "!\n\n";
     int optiune;
     std::cout << "1) View Cart\n2) Browse the shop\n3) Logout\nChoose Option: ";
     std::cin >> optiune;
@@ -353,25 +355,28 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
             for(; index < cart.size(); index++) {
                 std::cout << index + 1 << ") " << products.get_product_by_id(cart[index]).name << '\n';
             }
-            size_t option;
+            std::string option;
             std::cout << "\nType a number to select the desired product to buy or 0 to buy them all or E to exit the shop: ";
             std::cin >> option;
 
             Menu* menu;
-            if(option == 'E') {
+            if(option == "E") {
                 menu = new UserMenu;
+                system("clear");
                 menu->draw(accounts, products);
             } 
-            else if(option == '0') {
+            else if(option == "0") {
                 for(size_t i = 0; i < cart.size(); i++) {
                     acc.cart.remove_product(cart[i]);
                 }
                 menu = new UserMenu;
+                system("clear");
                 menu->draw(accounts, products);
             }
 
-            acc.cart.remove_product(cart[option - 1]);
+            acc.cart.remove_product(cart[std::stoi(option) - 1]);
             menu = new UserMenu;
+            system("clear");
             menu->draw(accounts, products);
         }
         else {
@@ -390,31 +395,34 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                     std::cout << i + 1 << ") " << products.get_product_by_id(cart[index]).name << '\n';
                 }
             }
-            int option;
+            std::string option;
             std::cout << "\nType a number to select the desired product to buy or 0 to buy them all or B to select another page or E to exit the shop: ";
             std::cin >> option;
 
             Menu* menu;
 
-            //solve this
-            if(option == 'E') {
+            if(option == "E") {
                 menu = new UserMenu;
+                system("clear");
                 menu->draw(accounts, products);
             } 
-            else if(option == 'B') {
+            else if(option == "B") {
                 menu = new ShopMenu;
+                system("clear");
                 menu->draw(accounts, products);
             }
-            else if(option == '0') {
+            else if(option == "0") {
                 for(size_t i = 0; i < cart.size(); i++) {
                     acc.cart.remove_product(cart[i]);
                 }
                 menu = new UserMenu;
+                system("clear");
                 menu->draw(accounts, products);
             }
 
-            acc.cart.remove_product(cart[option - 1]);
+            acc.cart.remove_product(cart[std::stoi(option) - 1]);
             menu = new UserMenu;
+            system("clear");
             menu->draw(accounts, products);
         }
     }
@@ -423,24 +431,132 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     size_t index = 0;
     Menu* menu;
+    std::string filter;
+    std::cout << "Available filters: none, type, name, price, weight, height, nms, tdp, memory, clock, cores, threads, socket, vertical, horizontal, tech.\n";
+    std::cout << "Select a filter: ";
+    std::cin >> filter;
+    std::vector<Product> prod;
+    if(filter == "none") {
+        prod = products.get_products();
+    }
+    if(filter == "type") {
+        std::string type;
+        std::cout << "\nType to be filtered: ";
+        std::cin >> type;
+        if(type == "CPU")
+            prod = products.get_products_with_type(ProductType::CPU);
+        if(type == "GPU")
+            prod = products.get_products_with_type(ProductType::GPU); 
+        if(type == "APU")
+            prod = products.get_products_with_type(ProductType::APU);
+    }
+    if(filter == "price") {
+        uint32_t price;
+        std::cout << "\nPrice to be filtered: ";
+        std::cin >> price;
+        prod = products.get_products_with_price(price);
+    }
+    if(filter == "weight") {
+        double weight;
+        std::cout << "\nWeight to be filtered: ";
+        std::cin >> weight;
+        prod = products.get_products_with_weight(weight);
+    }
+    if(filter == "height") {
+        double height;
+        std::cout << "\nHeight to be filtered: ";
+        std::cin >> height;
+        prod = products.get_products_with_height(height);
+    }
+    if(filter == "nms") {
+        uint8_t nms;
+        std::cout << "\nnms to be filtered: ";
+        std::cin >> nms;
+        prod = products.get_products_with_nms(nms);
+    }
+    if(filter == "tdp") {
+        double tdp;
+        std::cout << "\ntdp to be filtered: ";
+        std::cin >> tdp;
+        prod = products.get_products_with_tdp(tdp);
+    }
+    if(filter == "memory") {
+        uint32_t memory;
+        std::cout << "\nMemory to be filtered: ";
+        std::cin >> memory;
+        prod = products.get_products_with_memory(memory);
+    }
+    if(filter == "clock") {
+        uint32_t clock;
+        std::cout << "\nClock to be filtered: ";
+        std::cin >> clock;
+        prod = products.get_products_with_clock(clock);
+    }
+    if(filter == "cores") {
+        uint16_t cores;
+        std::cout << "\nCores to be filtered: ";
+        std::cin >> cores;
+        prod = products.get_products_with_cores(cores);
+    }
+    if(filter == "threads") {
+        uint32_t threads;
+        std::cout << "\nThreads to be filtered: ";
+        std::cin >> threads;
+        prod = products.get_products_with_threads(threads);
+    }
+    if(filter == "socket") {
+        std::string socket;
+        std::cout << "\nSocket to be filtered: ";
+        std::cin >> socket;
+        prod = products.get_products_with_socket(socket);
+    }
+    if(filter == "vertical") {
+        uint32_t vert;
+        std::cout << "\nMaximum vertical resolution to be filtered: ";
+        std::cin >> vert;
+        prod = products.get_products_with_max_vert_res(vert);
+    }
+    if(filter == "horizontal") {
+        uint32_t hor;
+        std::cout << "\nMaximum horizontal resolution to be filtered: ";
+        std::cin >> hor;
+        prod = products.get_products_with_max_hor_res(hor);
+    }
+    if(filter == "tech") {
+        std::string tech;
+        std::cout << "\nSupported technologies to be filtered: ";
+        std::cin >> tech;
+        if(tech == "OpenGL")
+            prod = products.get_products_with_tech(SupportedTechnologies::OpenGL);
+        if(tech == "DirectX")
+            prod = products.get_products_with_tech(SupportedTechnologies::DirectX); 
+        if(tech == "Vulkan")
+            prod = products.get_products_with_tech(SupportedTechnologies::Vulkan);
+        if(tech == "OpenGL&Vulkan")
+            prod = products.get_products_with_tech(SupportedTechnologies::OpenGL_Vulkan);
+        if(tech == "OpenGL&DirectX")
+            prod = products.get_products_with_tech(SupportedTechnologies::OpenGL_DirectX); 
+        if(tech == "Vulkan&DirectX")
+            prod = products.get_products_with_tech(SupportedTechnologies::Vulkan_DirectX);
+        if(tech == "OpenGL&Vulkan&DirectX")
+            prod = products.get_products_with_tech(SupportedTechnologies::OpenGL_Vulkan_DirectX);
+    }
     //select filter
-    std::vector<Product> prod = products.get_products();
     if(prod.size() < 10) {
         for(; index < prod.size(); index++) {
             std::cout << index + 1 << ") " << prod[index].name << '\n';
         }
-        size_t option;
+        std::string option;
         std::cout << "\nType a number to select the desired product or E to exit the shop: ";
         std::cin >> option;
 
         Menu* menu;
-        if(option == 'E') {
+        if(option == "E") {
             menu = new UserMenu;
             menu->draw(accounts, products);
         } 
         else {
-            //view product menu - 1
-            products.selected_product_id = prod[option - 1].id;
+            products.selected_product_id = prod[std::stoi(option) - 1].id;
             menu = new ViewProductMenu;
             menu->draw(accounts, products);
         }
@@ -461,24 +577,25 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                 std::cout << i + 1 << ") " << prod[i].name << '\n';
             }
         }
-        int option;
+        std::string option;
         std::cout << "\nType a number to select the desired product or type B to select another page or E to exit the shop: ";
         std::cin >> option;
 
-        //solve this
-        if(option == 'E') {
+        if(option == "E") {
             menu = new UserMenu;
+            system("clear");
             menu->draw(accounts, products);
         } 
-        else if(option == 'B') {
+        else if(option == "B") {
             menu = new ShopMenu;
+            system("clear");
             menu->draw(accounts, products);
         }
         else {
-            //view products - 1
-            products.selected_product_id = prod[option - 1].id;
+            products.selected_product_id = prod[std::stoi(option) - 1].id;
             Account& acc = accounts.get_user_by_id(accounts.logged_user_id);
             menu = new ViewProductMenu;
+            system("clear");
             menu->draw(accounts, products);
         }
     }
@@ -624,7 +741,6 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         break;
     case AccountType::User:
         system("clear");
-        std::cout << "Welcome " << a.username << "!\n\n";
         menu = new UserMenu;
         system("clear");
         accounts.logged_user_id = a.id;
@@ -633,7 +749,6 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
 
     case AccountType::Admin:
         system("clear");
-        std::cout << "Welcome " << a.username << "!\n\n";
         menu = new AdminMenu;
         system("clear");
         accounts.logged_user_id = a.id;

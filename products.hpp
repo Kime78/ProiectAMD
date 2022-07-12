@@ -154,6 +154,22 @@ public:
     void load_products_from_file();
     const std::vector<Product> get_products();
     const std::vector<Product> get_products_with_type(ProductType type);
-    
+    const std::vector<Product> get_products_with_str(std::string str);
+    const std::vector<Product> get_products_with_price(uint32_t price);
+
+    const std::vector<Product> get_products_with_weight(double weight);
+    const std::vector<Product> get_products_with_height(double height);
+    const std::vector<Product> get_products_with_nms(uint8_t nms);
+    const std::vector<Product> get_products_with_tdp(double tdp);
+    const std::vector<Product> get_products_with_memory(uint32_t memory);
+    const std::vector<Product> get_products_with_clock(uint32_t clock);
+
+    const std::vector<Product> get_products_with_cores(uint16_t cores);
+    const std::vector<Product> get_products_with_threads(uint16_t threads);
+    const std::vector<Product> get_products_with_socket(std::string socket);
+
+    const std::vector<Product> get_products_with_max_vert_res(uint32_t max_vertical_res);
+    const std::vector<Product> get_products_with_max_hor_res(uint32_t max_horizontal_res);
+    const std::vector<Product> get_products_with_tech(SupportedTechnologies tech);
     //to be filled with all filters...
 };
