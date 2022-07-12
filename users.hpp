@@ -16,7 +16,7 @@ public:
     const std::vector<uint64_t> get_products();
 };
 struct Account {
-    std::vector<uint64_t> shopping_cart; //to be redesigned later
+    ShoppingCart cart;
     std::string username;
     std::string password;
     uint64_t id;
@@ -27,7 +27,7 @@ struct Account {
 class AccountDatabase {
     std::vector<Account> account_database;
 public:
-    Account get_user_by_id(uint64_t id);
+    Account& get_user_by_id(uint64_t id);
 
     const std::vector<Account> get_users_by_name(std::string user);
 

@@ -9,11 +9,11 @@ Account::Account(std::string user, std::string pass, AccountType type) {
     this->id = random();
 }
 
-Account AccountDatabase::get_user_by_id(uint64_t id) {
+Account& AccountDatabase::get_user_by_id(uint64_t id) {
     for(size_t i = 0; i < account_database.size(); i++)
         if(account_database[i].id == id)
             return account_database[i];
-    return Account("", "", AccountType::InvalidUser);
+    //return Account("", "", AccountType::InvalidUser);
 }
 
 const std::vector<Account> AccountDatabase::get_users_by_name(std::string user) {
