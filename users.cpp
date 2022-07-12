@@ -45,11 +45,12 @@ void AccountDatabase::add_user(std::string user, std::string pass, AccountType t
         if(account_database[i].username == user && account_database[i].password == pass) //an account cannot be added twice
             return;
     }
+    Account acc(user, pass, type); 
     if(type == AccountType::User)
-        accounts << '\n' << user << "\t" << pass << "\t" << "User" << '\n';
+        accounts << acc.id << "\t" << user << "\t" << pass << "\t" << "User" << '\n';
     else
-        accounts << '\n' << user << "\t" << pass << "\t" << "Admin" << '\n';
-    account_database.push_back(Account(user, pass, type));
+        accounts << acc.id << "\t" << user << "\t" << pass << "\t" << "Admin" << '\n';
+    account_database.push_back(acc);
 }
 
 void AccountDatabase::remove_user(uint64_t id) {
@@ -60,11 +61,12 @@ void AccountDatabase::remove_user(uint64_t id) {
     std::string delete_line;
     Account acc = get_user_by_id(id);
     if(acc.type == AccountType::Admin)
-        delete_line = acc.username + "\t" + acc.password + "\t" + "Admin";
+        delete_line = std::to_string(acc.id) + "\t" + acc.username + "\t" + acc.password + "\t" + "Admin";
     else
-        delete_line = acc.username + "\t" + acc.password + "\t" + "User";
+        delete_line = std::to_string(acc.id) + "\t" + acc.username + "\t" + acc.password + "\t" + "User";
     while (getline(in, line)) {
         line.replace(line.find(delete_line), delete_line.length(), "");
+        //out << line << std::endl;
     }
     
     for(auto i = account_database.begin(); i != account_database.end(); i++) {
@@ -88,15 +90,22 @@ void AccountDatabase::load_users_from_file() {
     std::string user, pass;
     std::string admin;
 
-    while(account_file >> user >> pass >> admin) {
-        if(admin == "Admin")
-            account_database.push_back(Account(user, pass, AccountType::Admin));
-        else if(admin == "User")
-            account_database.push_back(Account(user, pass, AccountType::User));
+    uint64_t id;
+
+    while(account_file >> id >> user >> pass >> admin) {
+        if(admin == "Admin") {
+            Account acc(user, pass, AccountType::Admin);
+            acc.id = id;
+            account_database.push_back(acc);
+        }
+        else if(admin == "User"){
+            Account acc(user, pass, AccountType::User);
+            acc.id = id;
+            account_database.push_back(acc);
+        }
         else
             account_database.push_back(Account("", "", AccountType::InvalidUser));
     }
-    
 }
 
 void ShoppingCart::add_product(uint64_t id) {
@@ -105,7 +114,7 @@ void ShoppingCart::add_product(uint64_t id) {
 
 void ShoppingCart::remove_product(uint64_t id) {
     //https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position
-    //cart.erase(std::remove(cart.begin(), cart.end(), id), cart.end());
+    cart.erase(std::remove(cart.begin(), cart.end(), id), cart.end());
 }
 
 const std::vector<uint64_t> ShoppingCart::get_products() {

@@ -8,10 +8,10 @@ int main() {
     srand(time(NULL));
     AccountDatabase acc_database;
     ProductDatabase prod_database;
-    prod_database.add_product(Product("Hello", 69));
     acc_database.load_users_from_file();
+    prod_database.load_products_from_file();
     Menu* menu = new MainMenu;
-    menu->draw(acc_database, prod_database);
+    menu->draw(acc_database, prod_database, 0);
     
     return 0;
 }

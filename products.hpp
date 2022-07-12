@@ -132,9 +132,9 @@ struct Product {
     uint32_t price;
     uint64_t id;
     ProductType type;
-    APU apu = APU();
-    CPU cpu = CPU();
-    GPU gpu = GPU();
+    APU* apu;
+    CPU* cpu;
+    GPU* gpu;
 
     Product(std::string name, uint32_t price) {
         this->name = name;
