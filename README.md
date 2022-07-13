@@ -16,6 +16,7 @@ The products are divided in 3 categories:
 * CPUs;
 * APUs
 * GPUs.
+
 Any product should have a weight, a height, a TDP, nms, a memory and clock frequency
 The CPU will have a number of cores and threads, a socket;
 The GPU will have a maximum resolution and support for different version of technologies
@@ -27,6 +28,7 @@ The APU basically merge a CPU and a GPU in only one product.
 The users are grouped in 2 categories:
 * Administrator;
 * Client
+
 The shop should present a contextual menu based on roles (administrator/client).
 As administrator, you can add/remove new products for selling and you also have the
 permission to convert a client to admin role.
