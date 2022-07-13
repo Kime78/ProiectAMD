@@ -12,6 +12,6 @@ int main() {
     prod_database.load_products_from_file();
     Menu* menu = new MainMenu;
     menu->draw(acc_database, prod_database);
-    
+    delete menu;
     return 0;
 }

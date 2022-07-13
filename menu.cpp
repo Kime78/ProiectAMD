@@ -14,37 +14,37 @@ void AdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         menu = new AddProductMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 2:
         menu = new RemoveProductMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 3:
         menu = new AddUserMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 4:
         menu = new RemoveUserMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 5:
         menu = new MakeAdminMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 6:
         menu = new MainMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     
     default:
@@ -64,19 +64,19 @@ void UserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         menu = new CartMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 2:
         menu = new ShopMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     case 3:
         menu = new MainMenu;
         system("clear");
         menu->draw(accounts, products);
-        
+        delete menu;
         break;
     
     default:
@@ -101,7 +101,7 @@ void AddUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     Menu* menu = new AdminMenu;
     system("clear");
     menu->draw(accounts, products);
-    
+    delete menu;
 }
 
 void RemoveUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -112,6 +112,7 @@ void RemoveUserMenu::draw(AccountDatabase& accounts, ProductDatabase& products) 
     Menu* menu = new AdminMenu;
     system("clear");
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -285,6 +286,7 @@ void AddProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) 
     Menu* menu = new AdminMenu;
     system("clear");
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void RemoveProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -295,6 +297,7 @@ void RemoveProductMenu::draw(AccountDatabase& accounts, ProductDatabase& product
     Menu* menu = new AdminMenu;
     system("clear");
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -305,6 +308,7 @@ void MakeAdminMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     Menu* menu = new AdminMenu;
     system("clear");
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -319,11 +323,13 @@ void MainMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         menu = new LoginMenu;
         system("clear");
         menu->draw(accounts, products);   
+        delete menu;
         break;
     case 2:
         menu = new SignupMenu;
         system("clear");
         menu->draw(accounts, products);
+        delete menu;
     case 3:
         return;
         break;
@@ -348,6 +354,7 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         menu = new UserMenu;
         system("clear");
         menu->draw(accounts, products);
+        delete menu;
     }
     else {
         size_t index = 0;
@@ -364,6 +371,7 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                 menu = new UserMenu;
                 system("clear");
                 menu->draw(accounts, products);
+                delete menu;
             } 
             else if(option == "0") {
                 for(size_t i = 0; i < cart.size(); i++) {
@@ -372,12 +380,14 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                 menu = new UserMenu;
                 system("clear");
                 menu->draw(accounts, products);
+                delete menu;
             }
 
             acc.cart.remove_product(cart[std::stoi(option) - 1]);
             menu = new UserMenu;
             system("clear");
             menu->draw(accounts, products);
+            delete menu;
         }
         else {
             size_t num_pages = cart.size() / 10;
@@ -405,11 +415,13 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                 menu = new UserMenu;
                 system("clear");
                 menu->draw(accounts, products);
+                delete menu;
             } 
             else if(option == "B") {
                 menu = new ShopMenu;
                 system("clear");
                 menu->draw(accounts, products);
+                delete menu;
             }
             else if(option == "0") {
                 for(size_t i = 0; i < cart.size(); i++) {
@@ -418,12 +430,14 @@ void CartMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
                 menu = new UserMenu;
                 system("clear");
                 menu->draw(accounts, products);
+                delete menu;
             }
 
             acc.cart.remove_product(cart[std::stoi(option) - 1]);
             menu = new UserMenu;
             system("clear");
             menu->draw(accounts, products);
+            delete menu;
         }
     }
 }
@@ -554,11 +568,13 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         if(option == "E") {
             menu = new UserMenu;
             menu->draw(accounts, products);
+            delete menu;
         } 
         else {
             products.selected_product_id = prod[std::stoi(option) - 1].id;
             menu = new ViewProductMenu;
             menu->draw(accounts, products);
+            delete menu;
         }
     }
     else {
@@ -585,11 +601,13 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
             menu = new UserMenu;
             system("clear");
             menu->draw(accounts, products);
+            delete menu;
         } 
         else if(option == "B") {
             menu = new ShopMenu;
             system("clear");
             menu->draw(accounts, products);
+            delete menu;
         }
         else {
             products.selected_product_id = prod[std::stoi(option) - 1].id;
@@ -597,6 +615,7 @@ void ShopMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
             menu = new ViewProductMenu;
             system("clear");
             menu->draw(accounts, products);
+            delete menu;
         }
     }
 }
@@ -706,6 +725,7 @@ void ViewProductMenu::draw(AccountDatabase& accounts, ProductDatabase& products)
     Menu* menu = new ShopMenu;
     system("clear");
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -722,6 +742,7 @@ void SignupMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
     
     accounts.logged_user_id = accounts.get_users_by_name(user)[0].id;
     menu->draw(accounts, products);
+    delete menu;
 }
 
 void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
@@ -738,6 +759,7 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         std::cout << "Invalid username or password! Please try again.\n\n";
         menu = new LoginMenu;
         menu->draw(accounts, products);
+        delete menu;
         break;
     case AccountType::User:
         system("clear");
@@ -745,6 +767,7 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         system("clear");
         accounts.logged_user_id = a.id;
         menu->draw(accounts, products);
+        delete menu;
         break;
 
     case AccountType::Admin:
@@ -753,6 +776,7 @@ void LoginMenu::draw(AccountDatabase& accounts, ProductDatabase& products) {
         system("clear");
         accounts.logged_user_id = a.id;
         menu->draw(accounts, products);
+        delete menu;
         break;
 
     default:
